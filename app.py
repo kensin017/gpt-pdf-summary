@@ -1,8 +1,4 @@
 import streamlit as st
-import fitz  # PyMuPDF
-import openai
-from openai import OpenAI
-import time
 
 # ✅ 페이지 설정 (타이틀, 아이콘, 레이아웃)
 st.set_page_config(
@@ -10,6 +6,11 @@ st.set_page_config(
     page_icon="📄",
     layout="wide"
 )
+
+import fitz  # PyMuPDF
+import openai
+from openai import OpenAI
+import time
 
 # ✅ 상단 제목 + 설명
 st.title("📄 AI PDF 문서 요약 봇")
