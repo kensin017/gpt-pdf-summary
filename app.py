@@ -6,13 +6,13 @@ import time
 
 # ✅ 페이지 설정 (타이틀, 아이콘, 레이아웃)
 st.set_page_config(
-    page_title="GPT 문서 요약기",
+    page_title="AI PDF 문서 요약 봇",
     page_icon="📄",
     layout="wide"
 )
 
 # ✅ 상단 제목 + 설명
-st.title("📄 GPT 문서 요약기")
+st.title("📄 AI PDF 문서 요약 봇")
 st.write("업로드한 PDF 문서를 GPT가 자동으로 요약해드립니다.")
 
 # ✅ 경고/안내 문구
