@@ -30,7 +30,7 @@ def summarize_text_with_retry(prompt, retries=5, wait_sec=5):
     return "요청 실패: Rate Limit 초과"
 
 # 텍스트 분할
-def split_text_by_length(text, max_length=3000):
+def split_text_by_length(text, max_length=1000):
     return [text[i:i+max_length] for i in range(0, len(text), max_length)]
 
 # 전체 요약 파이프라인
