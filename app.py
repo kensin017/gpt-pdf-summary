@@ -1,8 +1,9 @@
 import streamlit as st
 import fitz  # PyMuPDF
 import openai
+from openai import OpenAI
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def extract_text_from_pdf(uploaded_file):
     doc = fitz.open(stream=uploaded_file.read(), filetype="pdf")
@@ -24,12 +25,13 @@ def summarize_text(text):
     - 주요 질문:
     """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3
     )
-    return response['choices'][0]['message']['content']
+
+    return response.choices[0].message.content
 
 # Streamlit UI
 st.title("📄 GPT 기반 PDF 요약 서비스")
