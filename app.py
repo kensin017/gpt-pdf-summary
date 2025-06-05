@@ -58,7 +58,7 @@ def summarize_large_text(text):
     st.markdown("### 🔹 개별 문서 요약")
     for i, s in enumerate(partial_summaries):
         st.markdown(f"#### 📄 Part {i+1}")
-        st.text_area(label="", value=s, height=250)
+        st.text_area(label=f"요약 Part {i+1}", value=s, height=250, key=f"summary_part_{i}")
 
     # ✅ 최종 요약 시도
     st.markdown("### 🔹 전체 요약 (GPT 기반 종합)")
