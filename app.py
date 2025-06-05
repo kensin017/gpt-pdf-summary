@@ -15,8 +15,7 @@ def extract_text_from_pdf(uploaded_file):
         text += page.get_text()
     return text
 
-# GPT 요약 (예외 처리 포함)
-def summarize_text_with_retry(prompt, retries=3):
+def summarize_text_with_retry(prompt, retries=5, wait_sec=5):
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
@@ -26,7 +25,8 @@ def summarize_text_with_retry(prompt, retries=3):
             )
             return response.choices[0].message.content
         except openai.RateLimitError:
-            time.sleep(5)
+            st.warning(f"RateLimit에 걸렸습니다. {wait_sec}초 후 {attempt+1}/{retries}회차 재시도...")
+            time.sleep(wait_sec)
     return "요청 실패: Rate Limit 초과"
 
 # 텍스트 분할
@@ -54,7 +54,14 @@ def summarize_large_text(text):
         summary = summarize_text_with_retry(prompt)
         partial_summaries.append(summary)
 
-    # 전체 통합 요약
+    # ✅ 요약 결과 UI에 직접 출력
+    st.markdown("### 🔹 개별 문서 요약")
+    for i, s in enumerate(partial_summaries):
+        st.markdown(f"#### 📄 Part {i+1}")
+        st.text_area(label="", value=s, height=250)
+
+    # ✅ 최종 요약 시도
+    st.markdown("### 🔹 전체 요약 (GPT 기반 종합)")
     final_prompt = f"""
     아래는 문서 일부 요약들이야. 이걸 종합해서 전체 문서를 요약해줘:
 
@@ -65,7 +72,16 @@ def summarize_large_text(text):
     - 핵심 항목 정리:
     - 생각해볼 질문:
     """
+
     final_summary = summarize_text_with_retry(final_prompt)
+
+    # 실패 시 fallback 안내 메시지
+    if "요청 실패" in final_summary:
+        st.warning("전체 요약 요청이 실패했어요 😢 개별 요약 내용을 참고해서 수동 정리해보세요.")
+    else:
+        st.success("전체 요약 완료!")
+        st.text_area("📋 전체 요약 결과", final_summary, height=400)
+
     return final_summary
 
 # Streamlit UI
