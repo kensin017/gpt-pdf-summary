@@ -19,7 +19,7 @@ def summarize_text_with_retry(prompt, retries=5, wait_sec=5):
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3
             )
@@ -30,7 +30,7 @@ def summarize_text_with_retry(prompt, retries=5, wait_sec=5):
     return "요청 실패: Rate Limit 초과"
 
 # 텍스트 분할
-def split_text_by_length(text, max_length=1000):
+def split_text_by_length(text, max_length=3000):
     return [text[i:i+max_length] for i in range(0, len(text), max_length)]
 
 # 전체 요약 파이프라인
@@ -75,12 +75,20 @@ def summarize_large_text(text):
 
     final_summary = summarize_text_with_retry(final_prompt)
 
-    # 실패 시 fallback 안내 메시지
+    # 전체 요약 결과 출력
     if "요청 실패" in final_summary:
         st.warning("전체 요약 요청이 실패했어요 😢 개별 요약 내용을 참고해서 수동 정리해보세요.")
     else:
         st.success("전체 요약 완료!")
         st.text_area("📋 전체 요약 결과", final_summary, height=400)
+    
+        # ✅ 다운로드 버튼 추가
+        st.download_button(
+            label="📥 전체 요약본 다운로드",
+            data=final_summary,
+            file_name="summary.txt",
+            mime="text/plain"
+        )
 
     return final_summary
 
