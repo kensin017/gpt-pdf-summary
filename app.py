@@ -19,7 +19,7 @@ def summarize_text_with_retry(prompt, retries=5, wait_sec=5):
     for attempt in range(retries):
         try:
             response = client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3
             )
