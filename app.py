@@ -1,7 +1,6 @@
 import streamlit as st
 import fitz  # PyMuPDF
 from openai import OpenAI
-import openai.error
 import time
 
 # GPT 클라이언트 초기화
