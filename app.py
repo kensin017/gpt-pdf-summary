@@ -1,4 +1,8 @@
 import streamlit as st
+import fitz  # PyMuPDF
+import openai
+from openai import OpenAI
+import time
 
 # ✅ 페이지 설정 (타이틀, 아이콘, 레이아웃)
 st.set_page_config(
@@ -6,11 +10,6 @@ st.set_page_config(
     page_icon="📄",
     layout="wide"
 )
-
-import fitz  # PyMuPDF
-import openai
-from openai import OpenAI
-import time
 
 # ✅ 상단 제목 + 설명
 st.title("📄 AI PDF 문서 요약 봇")
@@ -107,10 +106,7 @@ def summarize_large_text(text):
 
     return final_summary
 
-# Streamlit UI
-st.set_page_config(page_title="GPT 기반 PDF 요약", layout="wide")
-st.title("📄 GPT 기반 PDF 요약 서비스")
-st.write("업로드한 PDF 문서를 GPT가 자동으로 요약해드립니다.")
+
 
 uploaded_file = st.file_uploader("PDF 파일을 업로드해주세요", type=["pdf"])
 
