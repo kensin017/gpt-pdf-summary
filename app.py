@@ -4,6 +4,20 @@ import openai
 from openai import OpenAI
 import time
 
+# ✅ 페이지 설정 (타이틀, 아이콘, 레이아웃)
+st.set_page_config(
+    page_title="GPT 문서 요약기",
+    page_icon="📄",
+    layout="wide"
+)
+
+# ✅ 상단 제목 + 설명
+st.title("📄 GPT 문서 요약기")
+st.write("업로드한 PDF 문서를 GPT가 자동으로 요약해드립니다.")
+
+# ✅ 경고/안내 문구
+st.caption("※ 업로드한 파일은 저장되지 않으며, 요약 용도로만 처리됩니다.")
+
 # GPT 클라이언트 초기화
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
